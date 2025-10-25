@@ -49,6 +49,7 @@ python export.py 192.168.178.100 my_print_2024-01-15.mp4
 | `--check` | flag | - | Perform HTTP check after WebSocket confirmation |
 | `--timeout` | integer | `180` | Maximum seconds to wait for export completion |
 | `--verbose` | flag | - | Enable detailed logging for WebSocket and download operations |
+| `--url-only` | flag | - | Return the download URL without downloading the file |
 
 ### Examples
 
@@ -85,13 +86,26 @@ python export.py 192.168.178.100 --latest --check --timeout 300 --verbose
 python export.py 192.168.178.100 special_print.mp4 --out-dir ./videos/ --check
 ```
 
+#### Get Download URL Only
+```bash
+# Get the download URL for the latest timelapse without downloading
+python export.py 192.168.178.100 --latest --url-only
+
+# Get the download URL for a specific file
+python export.py 192.168.178.100 my_print_2024-01-15.mp4 --url-only
+
+# Get URL with verbose output to see the export process
+python export.py 192.168.178.100 --latest --url-only --verbose
+```
+
 ## How It Works
 
 1. **Discovery** (when using `--latest`): The script fetches the directory listing from your printer to find the most recent timelapse file
 2. **Export Trigger**: Sends a WebSocket command to your printer to start the export process
 3. **Status Monitoring**: Waits for WebSocket confirmation that the export is ready
-4. **Download**: Downloads the completed MP4 file to your specified directory
-5. **Verification**: Optionally performs HTTP checks to ensure the file is accessible
+4. **URL Output** (with `--url-only`): Returns the download URL without downloading
+5. **Download** (default): Downloads the completed MP4 file to your specified directory
+6. **Verification**: Optionally performs HTTP checks to ensure the file is accessible
 
 ## Requirements
 

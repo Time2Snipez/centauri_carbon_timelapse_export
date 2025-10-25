@@ -120,7 +120,7 @@ def find_latest_mp4_path(host: str, list_path: str, verbose: bool=False) -> str:
 
     return mp4_path
 
-async def run(host: str, target_mp4: str, check: bool, max_wait: int, verbose: bool, download_dir: str):
+async def run(host: str, target_mp4: str, check: bool, max_wait: int, verbose: bool, download_dir: str, url_only: bool = False):
     ws_url = f"ws://{host}:3030/websocket"
     http_url = f"http://{host}{target_mp4}"
     filename = os.path.basename(target_mp4)
@@ -213,6 +213,10 @@ async def run(host: str, target_mp4: str, check: bool, max_wait: int, verbose: b
         if check and not http_ready.is_set():
             print("(Heads-up: WS said ready, HTTP not yet downloadable)")
 
+        if url_only:
+            print(f"Download URL: {http_url}")
+            return
+
         # 7) Download the file (with a couple of retries in case disk write or tiny delay)
         os.makedirs(download_dir, exist_ok=True)
         success = download_file(http_url, dest_path, verbose=verbose)
@@ -233,6 +237,7 @@ def main():
     ap.add_argument("--latest", action="store_true", help="Discover latest item from listing, then export and download it")
     ap.add_argument("--list-path", default="/local/aic_tlp/", help="Listing path used with --latest (default /local/aic_tlp/)")
     ap.add_argument("--out-dir", default=".", help="Directory to save the downloaded MP4 (default current dir)")
+    ap.add_argument("--url-only", action="store_true", help="Return the download URL without downloading the file")
     args = ap.parse_args()
 
     # Validate parameters
@@ -245,7 +250,7 @@ def main():
             sys.exit(2)
         target_mp4 = args.list_path + args.file
 
-    asyncio.run(run(args.host, target_mp4, args.check, args.timeout, args.verbose, args.out_dir))
+    asyncio.run(run(args.host, target_mp4, args.check, args.timeout, args.verbose, args.out_dir, args.url_only))
 
 if __name__ == "__main__":
     main()
