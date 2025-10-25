@@ -29,20 +29,20 @@ pip install -r requirements.txt
 
 Export the latest timelapse video:
 ```bash
-python export.py --latest
+python export.py 192.168.178.100 --latest
 ```
 
 Export a specific timelapse file:
 ```bash
-python export.py /local/aic_tlp/my_print_2024-01-15.mp4
+python export.py 192.168.178.100 my_print_2024-01-15.mp4
 ```
 
 ### All Parameters
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `file` | string | - | MP4 path as shown by the UI (e.g., `/local/aic_tlp/NAME.mp4`) |
-| `--host` | string | `192.168.178.144` | Printer IP address or hostname |
+| `host` | string | **Required** | Printer IP address or hostname |
+| `file` | string | - | MP4 filename (e.g., `ECC_0.4_Grampo_PLA0.24_11m59s-3518651.mp4`) |
 | `--latest` | flag | - | Automatically discover and export the latest timelapse |
 | `--list-path` | string | `/local/aic_tlp/` | Directory path to search for timelapses (used with `--latest`) |
 | `--out-dir` | string | `.` | Directory to save the downloaded MP4 file |
@@ -55,34 +55,34 @@ python export.py /local/aic_tlp/my_print_2024-01-15.mp4
 #### Export Latest Timelapse
 ```bash
 # Export the most recent timelapse to current directory
-python export.py --latest
+python export.py 192.168.178.100 --latest
 
 # Export latest timelapse with verbose output
-python export.py --latest --verbose
+python export.py 192.168.178.100 --latest --verbose
 
 # Export latest timelapse to specific directory
-python export.py --latest --out-dir ./timelapses/
+python export.py 192.168.178.100 --latest --out-dir ./timelapses/
 ```
 
 #### Export Specific File
 ```bash
 # Export a specific timelapse file
-python export.py /local/aic_tlp/my_print_2024-01-15.mp4
+python export.py 192.168.178.100 my_print_2024-01-15.mp4
 
-# Export with custom host and timeout
-python export.py /local/aic_tlp/my_print_2024-01-15.mp4 --host 192.168.1.100 --timeout 300
+# Export with custom timeout
+python export.py 192.168.178.100 my_print_2024-01-15.mp4 --timeout 300
 ```
 
 #### Advanced Usage
 ```bash
 # Export latest with custom list path and output directory
-python export.py --latest --list-path /local/aic_tlp/ --out-dir ./exports/ --verbose
+python export.py 192.168.178.100 --latest --list-path /local/aic_tlp/ --out-dir ./exports/ --verbose
 
 # Export with HTTP verification and extended timeout
-python export.py --latest --check --timeout 300 --verbose
+python export.py 192.168.178.100 --latest --check --timeout 300 --verbose
 
 # Export specific file with custom settings
-python export.py /local/aic_tlp/special_print.mp4 --host 10.0.0.50 --out-dir ./videos/ --check
+python export.py 192.168.178.100 special_print.mp4 --out-dir ./videos/ --check
 ```
 
 ## How It Works

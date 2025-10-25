@@ -223,8 +223,8 @@ async def run(host: str, target_mp4: str, check: bool, max_wait: int, verbose: b
 
 def main():
     ap = argparse.ArgumentParser(description="Trigger Centauri timelapse export and wait for completion; optionally auto-pick latest and download.")
-    ap.add_argument("file", nargs="?", help="MP4 path as shown by the UI, e.g. /local/aic_tlp/NAME.mp4")
-    ap.add_argument("--host", default="192.168.178.144", help="Printer IP/host")
+    ap.add_argument("host", help="Printer IP/host")
+    ap.add_argument("file", nargs="?", help="MP4 path as shown by the UI, e.g. NAME.mp4")
     ap.add_argument("--check", action="store_true", help="HTTP check after ready")
     ap.add_argument("--timeout", type=int, default=180, help="Max seconds to wait (default 180)")
     ap.add_argument("--verbose", action="store_true", help="Log extra WS/download info")
@@ -243,7 +243,7 @@ def main():
         if not args.file:
             print("ERROR: provide a file path or use --latest", file=sys.stderr)
             sys.exit(2)
-        target_mp4 = args.file
+        target_mp4 = args.list_path + args.file
 
     asyncio.run(run(args.host, target_mp4, args.check, args.timeout, args.verbose, args.out_dir))
 
