@@ -214,7 +214,6 @@ async def run(host: str, target_mp4: str, check: bool, max_wait: int, verbose: b
             print("(Heads-up: WS said ready, HTTP not yet downloadable)")
 
         if url_only:
-            print(f"Download URL: {http_url}")
             return
 
         # 7) Download the file (with a couple of retries in case disk write or tiny delay)
